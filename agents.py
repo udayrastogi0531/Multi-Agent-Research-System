@@ -14,16 +14,16 @@ llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
 #1st agent 
 def build_search_agent():
     return create_agent(
-        model = llm,
-        tools= [web_search]
+        model=llm,
+        tools=[web_search]
     )
 
 #2nd agent 
 
 def build_reader_agent():
     return create_agent(
-        model = llm,
-        tools = [scrape_url]
+        model=llm,
+        tools=[scrape_url]
     )
 
 
