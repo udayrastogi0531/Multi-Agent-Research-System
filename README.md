@@ -1,77 +1,137 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png" alt="Robot Emoji" width="80" />
-  <h1>🚀 Multi-Agent Research System</h1>
-  <p><i>An intelligent, multi-agent AI research assistant powered by Groq, LangChain, and Streamlit.</i></p>
 
-  [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-  [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B.svg?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
-  [![LangChain](https://img.shields.io/badge/LangChain-1C3C3C.svg?style=for-the-badge&logo=langchain&logoColor=white)](https://langchain.com/)
-  [![Groq](https://img.shields.io/badge/Groq-Fast_AI-f55036.svg?style=for-the-badge)](https://groq.com)
+# 🔬 ResearchMind — Multi-Agent Research System
+
+### From a topic to a researched, written and critically reviewed report.
+
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-UI-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![LangChain](https://img.shields.io/badge/LangChain-Agents-1C3C3C?style=for-the-badge&logo=langchain)](https://python.langchain.com/)
+[![Groq](https://img.shields.io/badge/Groq-LLM-F55036?style=for-the-badge)](https://groq.com/)
+[![Tavily](https://img.shields.io/badge/Tavily-Web_Search-111827?style=for-the-badge)](https://tavily.com/)
+
+[Repository](https://github.com/udayrastogi0531/Multi-Agent-Research-System) · [Issues](https://github.com/udayrastogi0531/Multi-Agent-Research-System/issues)
+
 </div>
 
 ---
 
-## 🌟 Overview
-**ResearchMind** utilizes the power of specialized AI agents working collaboratively to automate deep research. Enter any topic, and watch as our agents search the web, scrape deep content, draft comprehensive reports, and critically review them entirely autonomously!
+## Overview
 
-## ⚙️ Architecture & Flow Diagram
+ResearchMind is a Streamlit-based research assistant that coordinates specialized LLM agents and chains to gather information, inspect a relevant source, draft a report and critique the result.
 
-The system employs a 4-stage pipeline passing critical state data to ensure the highest research quality.
+Instead of asking one model to do every step in a single prompt, the pipeline separates web discovery, deeper reading, report writing and review into distinct stages.
+
+## System workflow
 
 ```mermaid
-graph TD
-    classDef default fill:#0a0a0f,stroke:#ff8c32,stroke-width:2px,color:#f0ebe0;
-    classDef highlight fill:#ff8c32,stroke:#ff8c32,stroke-width:2px,color:#0a0a0f,font-weight:bold;
-    
-    A[👤 User Input Topic]:::highlight --> B(💻 Streamlit UI)
-    B --> C{🔍 Search Agent}
-    C -->|Queries Tavily API| D[🌐 Top URLs & Snippets Fetch]
-    D --> E{📄 Reader Agent}
-    E -->|Selects Best URL & Scrapes| F[📝 Clean Scraped Content]
-    F --> G{✍️ Writer Chain}
-    G -->|Synthesizes Data| H[📄 Draft Research Report]
-    H --> I{🧐 Critic Chain}
-    I -->|Evaluates & Scores| J[✅ Final Report + Feedback UI]:::highlight
-    J --> B
+flowchart TD
+    A[Research topic] --> B[Search agent]
+    B --> C[Tavily web search]
+    C --> D[Search results and URLs]
+    D --> E[Reader agent]
+    E --> F[Select and scrape a relevant URL]
+    F --> G[Research context]
+    G --> H[Writer chain]
+    H --> I[Structured research report]
+    I --> J[Critic chain]
+    J --> K[Score, strengths and improvements]
+    K --> L[Final research output]
 ```
 
-## ✨ Agent Roles
-- **🔍 Search Agent:** Autonomously scours the web for the latest, most reliable information using the Tavily API.
-- **📄 Reader Agent:** Deep-dives into the most relevant URLs, accurately scraping and cleaning text content.
-- **✍️ Writer Chain:** Synthesizes the gathered intelligence into a beautifully structured Markdown report.
-- **🧐 Critic Chain:** Acts as a strict quality-control reviewer, scoring the draft and suggesting areas to improve.
+## Agent responsibilities
 
-## 🚀 Getting Started
+| Component | Responsibility |
+|---|---|
+| Search agent | Uses the Tavily web-search tool to find recent information, titles, URLs and snippets |
+| Reader agent | Uses a URL-scraping tool to retrieve readable page content |
+| Writer chain | Produces a report with introduction, key findings, conclusion and source URLs |
+| Critic chain | Reviews the generated report and returns a score, strengths, improvement areas and verdict |
 
-### 1. Clone the repository
+The agents use Groq's ChatGroq integration with the Llama 3.3 70B Versatile model as configured in the current implementation.
+
+## Technology
+
+- **UI:** Streamlit
+- **Agent orchestration:** LangChain agent interface
+- **Model provider:** Groq
+- **Search:** Tavily
+- **Page extraction:** Requests and BeautifulSoup
+- **Configuration:** python-dotenv
+
+## Repository layout
+
+```text
+.
+├── app.py             # Streamlit application
+├── agents.py          # Search/reader agents, writer and critic chains
+├── tools.py           # Tavily search and URL scraping tools
+├── pipeline.py        # Four-stage research pipeline
+├── requirements.txt
+├── .env.example
+└── DEPLOYMENT.md
+```
+
+## Run locally
+
+1. Clone the repository and enter the project directory.
+
 ```bash
 git clone https://github.com/udayrastogi0531/Multi-Agent-Research-System.git
 cd Multi-Agent-Research-System
 ```
 
-### 2. Install dependencies
-Ensure you have Python 3.9+ installed.
+2. Create and activate a virtual environment.
+
+```bash
+python -m venv .venv
+```
+
+Windows PowerShell:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+macOS / Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+3. Install dependencies.
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Setup Environment Variables
-Create a `.env` file in the root directory and add your API keys:
-```env
-GROQ_API_KEY="your_groq_api_key_here"
-TAVILY_API_KEY="your_tavily_api_key_here"
-Demo https://multi-agent-research-system-o7ul.onrender.com/
-```
-*(Get your Groq API key from [GroqCloud](https://console.groq.com) and Tavily API key from [Tavily](https://tavily.com))*
+4. Create a local .env file from the example and add your own API keys.
 
-### 4. Run the App
+```env
+GROQ_API_KEY=your_groq_api_key
+TAVILY_API_KEY=your_tavily_api_key
+```
+
+5. Launch the Streamlit interface.
+
 ```bash
 streamlit run app.py
 ```
 
----
-<div align="center">
-  <i>Built with ❤️ by Uday Rastogi</i>
-</div>
-  live https://multi-agent-research-system-ddk3knbpwwjz6nagswcati.streamlit.app/
-  https://multi-agent-research-system-o7ul.onrender.com/
+The command-line pipeline can also be run with:
+
+```bash
+python pipeline.py
+```
+
+## Important limitations
+
+- Search quality depends on the Tavily results and the topic.
+- The reader agent scrapes a selected URL; websites may block requests or return incomplete content.
+- The report and critic are LLM-generated and require human fact-checking.
+- This project is a research workflow demonstration, not an autonomous fact-verification service.
+- Keep API keys in environment variables; never commit a real .env file.
+
+## Author
+
+**Uday Prakash Rastogi** · [GitHub](https://github.com/udayrastogi0531) · [LinkedIn](https://www.linkedin.com/in/uday-prakash-rastogi-33b55a2a2/)
